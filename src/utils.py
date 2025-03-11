@@ -24,15 +24,11 @@ MONTHS = [
 ]
 
 MOOD_VALUES = {
-    "bad": 1.0,
-    "meh": 2.0,
-    "less ok": 2.5,
-    "ok": 3.0,
-    "alright": 3.5,
+    "awful": 1.0,
+    "bad": 2.0,
+    "meh": 3.0,
     "good": 4.0,
-    "better": 4.5,
-    "great": 5.0,
-    "awesome": 6.0,
+    "rad": 5.0,
 }
 
 DT_FORMAT_READ = r"%Y-%m-%d %H:%M"

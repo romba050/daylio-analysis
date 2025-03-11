@@ -29,9 +29,13 @@ from src.utils import (
     MoodStd,
 )
 
-REMOVE: set[str] = set(
-    json.load(open(pathlib.Path("data") / "to_remove.json", "r", encoding="utf-8-sig"))
-)
+# Try to load removal list, default to empty set if file not found
+try:
+    REMOVE: set[str] = set(
+        json.load(open(pathlib.Path("data") / "to_remove.json", "r", encoding="utf-8-sig"))
+    )
+except FileNotFoundError:
+    REMOVE: set[str] = set()
 
 DATETIME_PATTERN = re.compile(r"\d{2}\.\d{2}\.\d{4}\s+\d{2}:\d{2}")
 
@@ -48,7 +52,7 @@ class Dataset:
 
     def __init__(
         self,
-        csv_file: str | pathlib.Path | None = None,
+        csv_file_path: str | pathlib.Path | None = None,
         *,
         remove: bool = True,
         _entries: list[Entry] | None = None,
@@ -58,8 +62,8 @@ class Dataset:
         """
         if _entries is not None:
             self.entries = _entries
-        elif csv_file is not None:
-            self.entries = Dataset.read_entries_from_csv(csv_file)
+        elif csv_file_path is not None:
+            self.entries = Dataset.read_entries_from_csv(csv_file_path)
             if remove:
                 for entr in self.entries:
                     entr.activities -= REMOVE
@@ -446,4 +450,4 @@ if __name__ == "__main__":
     path = next(DATA_DIR.glob("*.csv"))
     print("using file", path.name)
 
-    df = Dataset(csv_file=path)
+    df = Dataset(csv_file_path=path)
